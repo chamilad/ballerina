@@ -67,6 +67,7 @@ public class ServerInstance implements Server {
             log.info("Server Home " + serverHome);
             configServer();
         }
+
         if (args == null | args.length == 0) {
             throw new IllegalArgumentException("No Argument provided for server startup.");
         }
@@ -140,6 +141,11 @@ public class ServerInstance implements Server {
         return isServerRunning;
     }
 
+    @Override
+    public String getServerHttpUrl() {
+        return "http://localhost:" + httpServerPort;
+    }
+
     /**
      * setting the list of command line argument while server startup.
      *
@@ -163,16 +169,6 @@ public class ServerInstance implements Server {
      */
     public String getServerHome() {
         return serverHome;
-    }
-
-    /**
-     * Return the service URL.
-     *
-     * @param servicePath - http url of the given service
-     * @return
-     */
-    public String getServiceURLHttp(String servicePath) {
-        return "http://localhost:" + httpServerPort + "/" + servicePath;
     }
 
     /**

@@ -102,10 +102,6 @@ public abstract class HTTP2IntegrationTestCase {
         Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
     }
 
-    public String getServiceURLHttp(String servicePath) {
-        return serverInstance.getServiceURLHttp(servicePath);
-    }
-
     /**
      * List the file in a given directory.
      *

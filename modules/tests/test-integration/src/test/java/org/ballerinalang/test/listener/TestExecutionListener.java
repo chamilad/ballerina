@@ -23,6 +23,7 @@ import org.ballerinalang.test.context.ServerInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IExecutionListener;
+import org.ballerinalang.test.context.DockerServerInstance;
 
 import java.io.File;
 import java.util.List;
@@ -39,35 +40,40 @@ public class TestExecutionListener implements IExecutionListener {
     /**
      * This method will execute before all the test classes are executed and this will start a server
      * with sample service files deployed.
-     *
      */
     @Override
     public void onExecutionStart() {
-        //path of the zip file distribution
-        String serverZipPath = System.getProperty(Constant.SYSTEM_PROP_SERVER_ZIP);
-        newServer = new ServerInstance(serverZipPath) {
-            //config the service files need to be deployed
-            @Override
-            protected void configServer() {
-                //path of the sample bal file directory
-                String serviceSampleDir = this.getServerHome() + File.separator + Constant.SERVICE_SAMPLE_DIR;
-                //list of sample bal files to be deploy
-                String[] serviceFilesArr = listSamples(serviceSampleDir);
-                setArguments(serviceFilesArr);
+        String currentProfile = System.getProperty("profile.name");
+        if (currentProfile == null || currentProfile.equals("")) {
+            //path of the zip file distribution
+            String serverZipPath = System.getProperty(Constant.SYSTEM_PROP_SERVER_ZIP);
+            newServer = new ServerInstance(serverZipPath) {
+                //config the service files need to be deployed
+                @Override
+                protected void configServer() {
+                    //path of the sample bal file directory
+                    String serviceSampleDir = this.getServerHome() + File.separator + Constant.SERVICE_SAMPLE_DIR;
+                    //list of sample bal files to be deploy
+                    String[] serviceFilesArr = listSamples(serviceSampleDir);
+                    setArguments(serviceFilesArr);
+                }
+            };
+
+            try {
+                newServer.start();
+            } catch (Exception e) {
+                log.error("Server failed to start. " + e.getMessage(), e);
+                throw new RuntimeException("Server failed to start. " + e.getMessage(), e);
+
             }
-        };
-        try {
-            newServer.start();
-        } catch (Exception e) {
-            log.error("Server failed to start. " + e.getMessage(), e);
-            throw new RuntimeException("Server failed to start. " + e.getMessage(), e);
+        } else if (currentProfile.equals("integration")) {
+            newServer = new DockerServerInstance();
         }
     }
 
     /**
      * This method will execute after all the test classes are executed and this will stop the server
      * started by start method.
-     *
      */
     @Override
     public void onExecutionFinish() {
@@ -83,8 +89,10 @@ public class TestExecutionListener implements IExecutionListener {
 
     /**
      * To het the server instance started by listener.
+     *
      * @return up and running server instance.
      */
+
     public static Server getServerInstance() {
         if (newServer == null || !newServer.isRunning()) {
             throw new RuntimeException("Server in not started Properly");
@@ -96,7 +104,7 @@ public class TestExecutionListener implements IExecutionListener {
      * List the file in a given directory.
      *
      * @param path of the directory
-     * @param list   collection of files found
+     * @param list collection of files found
      * @return String arrays of file absolute paths
      */
     private static String[] listFiles(String path, List<String> list) {
