@@ -1,7 +1,7 @@
 package bal.integration.selectiveConsumer;
 
 import ballerina.net.http;
-import ballerina.lang.message;
+import ballerina.lang.messages;
 import ballerina.lang.json;
 import ballerina.lang.string;
 
@@ -22,7 +22,7 @@ function validateRequest(message msg)(boolean validationStatus){
     json payload;
     string crediability;
 
-    payload = message:getJsonPayload(msg);
+    payload = messages:getJsonPayload(msg);
     crediability = json:getString(payload, "$.creditRequest.checkStatus");
     if(string:equalsIgnoreCase(crediability, "special")){
         validationStatus = true;
@@ -34,13 +34,13 @@ function validateRequest(message msg)(boolean validationStatus){
 }
 
 function requestSender(message incomingMsg)(message response){
-    http:HTTPConnector ep = new http:HTTPConnector ("http://localhost:9090");
+    http:ClientConnector ep = create http:ClientConnector ("http://localhost:9090");
 
     boolean status;
 
     status = validateRequest(incomingMsg);
     if(status){
-        response = http:HTTPConnector.post(ep, "/bankCreditService/specialityCreditDep", incomingMsg);
+        response = http:ClientConnector.post(ep, "/bankCreditService/specialityCreditDep", incomingMsg);
     }
     else{
 
