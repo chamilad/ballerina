@@ -1,17 +1,17 @@
-import ballerina.lang.message;
+import ballerina.lang.messages;
 
-@BasePath ("/centralChannel")
+@http:BasePath ("/centralChannel")
 service CentralEchannelService {
 
-    @POST
-    @Path ("/checkAvailability")
+    @http:POST
+    @http:Path ("/checkAvailability")
     resource availability (message m) {
 	       message response = {};
 	       json payload = {};
 	       json incomingMsg = {};
 	         
 	  	payload = `{"AvailabilityDetails": {"ID": "456", "Name": "TestDoctorCentral","Speclization": "test"}}`;
-		message:setJsonPayload(response, payload);
+		messages:setJsonPayload(response, payload);
         	reply response;
         
    }

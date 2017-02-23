@@ -1,15 +1,13 @@
-package bal.integration.selectiveConsumer;
-
 import ballerina.net.http;
 import ballerina.lang.messages;
-import ballerina.lang.json;
-import ballerina.lang.string;
+import ballerina.lang.jsons;
+import ballerina.lang.strings;
 
-@BasePath("/selectiveConsumer")
+@http:BasePath("/selectiveConsumer")
 service SelectiveConsumerService{
 
-    @POST
-    @Path ("/invoke")
+    @http:POST
+    @http:Path ("/invoke")
     resource selectiveConsumerResource (message m) {
         message response;
 
@@ -23,8 +21,8 @@ function validateRequest(message msg)(boolean validationStatus){
     string crediability;
 
     payload = messages:getJsonPayload(msg);
-    crediability = json:getString(payload, "$.creditRequest.checkStatus");
-    if(string:equalsIgnoreCase(crediability, "special")){
+    crediability = jsons:getString(payload, "$.creditRequest.checkStatus");
+    if(strings:equalsIgnoreCase(crediability, "special")){
         validationStatus = true;
     }
     else{

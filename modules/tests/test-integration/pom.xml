@@ -166,7 +166,7 @@
                                                 <files>
                                                     <file>
                                                         <!-- Ballerina distribution -->
-                                                        <source>${project.parent.parent.basedir}/modules/distribution/target/ballerina-${project.version}.zip</source>
+                                                        <source>${project.parent.basedir}/modules/distribution/target/ballerina-${project.version}.zip</source>
                                                         <outputDirectory>./</outputDirectory>
                                                         <destName>ballerina-dist.zip</destName>
                                                     </file>
@@ -205,14 +205,15 @@
                                         <env>
                                             <!-- Used by the command script -->
                                             <project_version>${project.version}</project_version>
-                                            <load_samples>true</load_samples>
                                             <bal_files_home>/maven/services/</bal_files_home>
+                                            <load_samples>true</load_samples>
+                                            <debug>false</debug>
                                         </env>
                                         <ports>
                                             <port>ballerina.port:9090</port>
                                         </ports>
                                         <wait>
-                                            <log>ballerina: deployed service </log>
+                                            <log>ballerina: started server connector</log>
                                             <time>20000</time>
                                         </wait>
                                     </run>

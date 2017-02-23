@@ -18,12 +18,12 @@
 package org.ballerinalang.test.listener;
 
 import org.ballerinalang.test.context.Constant;
+import org.ballerinalang.test.context.DockerServerInstance;
 import org.ballerinalang.test.context.Server;
 import org.ballerinalang.test.context.ServerInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.IExecutionListener;
-import org.ballerinalang.test.context.DockerServerInstance;
 
 import java.io.File;
 import java.util.List;

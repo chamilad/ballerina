@@ -1,32 +1,30 @@
-package bal.integration.selectiveConsumer;
-
-@BasePath("/bankCreditService")
+@http:BasePath("/bankCreditService")
 service BankCreditService{
 
-    @POST
-    @Path ("/specialityCreditDep")
+    @http:POST
+    @http:Path ("/specialityCreditDep")
     resource specialityCreditDep (message m) {
         reply m;
     }
 
-    @POST
-    @Path ("/normalCreditDep")
+    @http:POST
+    @http:Path ("/normalCreditDep")
     resource normalCreditDep (message m) {
         reply m;
     }
 }
 
-@BasePath("/bankCardService")
+@http:BasePath("/bankCardService")
 service BankCardService{
 
-    @POST
-    @Path ("/specialityCustomerDep")
+    @http:POST
+    @http:Path ("/specialityCustomerDep")
     resource specialityCustomerDep (message m) {
         reply m;
     }
 
-    @POST
-    @Path ("/normalCustomerDep")
+    @http:POST
+    @http:Path ("/normalCustomerDep")
     resource normalCustomerDep (message m) {
         reply m;
     }
